@@ -2,10 +2,13 @@
 <html lang="es-CL">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#f58b1f">
-<title>Carta de Postulación a Electividades · Liceo Teniente Dagoberto Godoy Nº3</title>
+<title>Carta de Postulación a Electividades 2025 · Liceo Teniente Dagoberto Godoy Nº3</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <style>
 :root{
   --brand:#0b5db6;--brand-strong:#0a4f9d;--orange:#f58b1f;
@@ -13,11 +16,10 @@
   --border:#e7eefb;--radius:18px;--shadow-sm:0 8px 18px rgba(10,79,157,.10);
 }
 body{margin:0;font-family:"Montserrat",sans-serif;color:var(--ink);
-background:var(--bg);display:grid;grid-template-rows:auto 1fr auto;min-height:100dvh;}
+background:var(--bg);display:grid;grid-template-rows:auto 1fr auto;min-height:100dvh;overflow-x:hidden;}
 .brandbar{background:linear-gradient(90deg,#f58b1f,#f3a24a 30%,#4783cf 75%,#0b5db6 100%);color:#fff;}
 .brandbar-inner{max-width:980px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px;}
 .logo-colegio{height:72px;width:auto;object-fit:contain;}
-.brand-titles .org{font-weight:700}.brand-titles .school{font-weight:600;font-size:.95rem}
 .wrap{max-width:980px;margin:20px auto;padding:0 16px;}
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
 padding:22px;box-shadow:var(--shadow-sm);}
@@ -30,90 +32,58 @@ padding:12px 20px;cursor:pointer;display:block;margin:25px auto 0;box-shadow:0 6
 button:hover{background:#e57e12;}
 footer{text-align:center;font-size:.9rem;color:var(--muted);
 padding:14px 10px;border-top:1px solid #e9eef9;background:#f6f9ff;}
-.declaracion{margin-top:20px;line-height:1.6;font-size:.95rem;text-align:justify;}
-.firmas{display:flex;justify-content:space-between;flex-wrap:wrap;margin-top:40px;font-size:.9rem;gap:20px}
-.firmas div{text-align:center;width:45%;min-width:200px;}
-canvas{border:1px solid #ccc;border-radius:10px;width:100%;max-width:300px;height:120px;}
+canvas{border:1px solid #ccc;border-radius:10px;width:100%;max-width:300px;height:120px;touch-action:none;background:#fff;}
 .clear-btn{background:#fff;color:#555;border:1px solid #ccc;padding:6px 10px;border-radius:8px;margin-top:4px;cursor:pointer;}
 .clear-btn:hover{background:#eee;}
-@media(max-width:768px){
-  .brandbar-inner{flex-direction:column;text-align:center;}
-  .firmas div{width:100%;}
-  .card{padding:18px;}
-}
 </style>
 </head>
+
 <body>
 <div class="brandbar">
   <div class="brandbar-inner">
     <img src="img/logo_colegio.png" class="logo-colegio" alt="Logo Liceo">
-    <div class="brand-titles">
-      <div class="org">Red Crecemos</div>
-      <div class="school">Liceo Teniente Dagoberto Godoy Nº3</div>
+    <div>
+      <div><b>Red Crecemos</b></div>
+      <div>Liceo Teniente Dagoberto Godoy Nº3</div>
     </div>
   </div>
 </div>
 
-<div class="wrap">
+<div class="wrap" id="formulario">
   <div class="card">
     <h1>CARTA DE POSTULACIÓN A ELECTIVIDADES 2025</h1>
-    <p><b>Selección de electivos de formación diferenciada Humanista-Científico 2025</b></p>
 
-    <p>
-      Yo, <input type="text" id="apellido" placeholder="Apellidos del estudiante">
-      <input type="text" id="nombre" placeholder="Nombres del estudiante">,
-      RUT: <input type="text" id="rut_estudiante" placeholder="Ej: 22.843.101-K" style="max-width:200px">,
+    <p>Yo, <input id="apellido" placeholder="Apellidos">
+      <input id="nombre" placeholder="Nombres">,
+      RUT: <input id="rut_estudiante" placeholder="22.843.101-K" style="max-width:200px">,
       estudiante del curso 
       <select id="curso">
-        <option value="">Selecciona tu curso</option>
-        <option>2° Medio A</option>
-        <option>2° Medio B</option>
-        <option>2° Medio C</option>
+        <option></option><option>2° Medio A</option><option>2° Medio B</option><option>2° Medio C</option>
       </select>,
-      declaro mi intención de electividad para el año 2026 en el establecimiento Liceo Teniente Dagoberto Godoy N°3 Lo Prado.
+      declaro mi intención de electividad para el año 2026.
     </p>
 
-    <p>
-      En conocimiento de mi apoderado 
-      <input type="text" id="apoderado" placeholder="Nombre del apoderado">
-      RUT: <input type="text" id="rut_apoderado" placeholder="Ej: 12.345.678-9" style="max-width:220px">,
-      procedo a declarar mi elección para las siguientes asignaturas electivas.
+    <p>En conocimiento de mi apoderado 
+      <input id="apoderado" placeholder="Nombre del apoderado">
+      RUT: <input id="rut_apoderado" placeholder="12.345.678-9" style="max-width:220px">,
+      procedo a declarar mis elecciones de asignaturas.
     </p>
 
-    <p><i>Debe asignar los números 1, 2 y 3 según su preferencia en cada bloque (sin repetir dentro del mismo bloque).</i></p>
-
-    <!-- BLOQUES -->
     <h2>Bloque 1</h2>
-    <label>Geografía, territorio y desafíos socioambientales</label>
-    <select id="b1_op1" onchange="validarBloque('b1')"><option></option><option>1</option><option>2</option><option>3</option></select>
-    <label>Participación y argumentación en democracia</label>
-    <select id="b1_op2" onchange="validarBloque('b1')"><option></option><option>1</option><option>2</option><option>3</option></select>
-    <label>Estética</label>
-    <select id="b1_op3" onchange="validarBloque('b1')"><option></option><option>1</option><option>2</option><option>3</option></select>
+    <label>Geografía</label><select id="b1_op1" onchange="validarBloque('b1')"><option></option><option>1</option><option>2</option><option>3</option></select>
+    <label>Democracia</label><select id="b1_op2" onchange="validarBloque('b1')"><option></option><option>1</option><option>2</option><option>3</option></select>
+    <label>Estética</label><select id="b1_op3" onchange="validarBloque('b1')"><option></option><option>1</option><option>2</option><option>3</option></select>
 
     <h2>Bloque 2</h2>
-    <label>Probabilidades y estadística descriptiva e inferencial</label>
-    <select id="b2_op1" onchange="validarBloque('b2')"><option></option><option>1</option><option>2</option><option>3</option></select>
-    <label>Física</label>
-    <select id="b2_op2" onchange="validarBloque('b2')"><option></option><option>1</option><option>2</option><option>3</option></select>
-    <label>Biología de los ecosistemas</label>
-    <select id="b2_op3" onchange="validarBloque('b2')"><option></option><option>1</option><option>2</option><option>3</option></select>
+    <label>Estadística</label><select id="b2_op1" onchange="validarBloque('b2')"><option></option><option>1</option><option>2</option><option>3</option></select>
+    <label>Física</label><select id="b2_op2" onchange="validarBloque('b2')"><option></option><option>1</option><option>2</option><option>3</option></select>
+    <label>Biología</label><select id="b2_op3" onchange="validarBloque('b2')"><option></option><option>1</option><option>2</option><option>3</option></select>
 
     <h2>Bloque 3</h2>
-    <label>Creación y composición musical</label>
-    <select id="b3_op1" onchange="validarBloque('b3')"><option></option><option>1</option><option>2</option><option>3</option></select>
-    <label>Artes visuales y audiovisuales</label>
-    <select id="b3_op2" onchange="validarBloque('b3')"><option></option><option>1</option><option>2</option><option>3</option></select>
-    <label>Economía y sociedad</label>
-    <select id="b3_op3" onchange="validarBloque('b3')"><option></option><option>1</option><option>2</option><option>3</option></select>
+    <label>Música</label><select id="b3_op1" onchange="validarBloque('b3')"><option></option><option>1</option><option>2</option><option>3</option></select>
+    <label>Artes</label><select id="b3_op2" onchange="validarBloque('b3')"><option></option><option>1</option><option>2</option><option>3</option></select>
+    <label>Economía</label><select id="b3_op3" onchange="validarBloque('b3')"><option></option><option>1</option><option>2</option><option>3</option></select>
 
-    <div class="declaracion">
-      Declaro estar en conocimiento de que el presente documento debe ser entregado firmado por mí y mi apoderado a 
-      <b>Susana Burgos</b>, secretaria académica de segundo ciclo, a más tardar el día <b>09 de octubre a las 15:30 hrs</b>.
-      En caso de no cumplir con esta exigencia, acepto la asignación a los electivos disponibles, según su demanda.
-    </div>
-
-    <!-- Firmas -->
     <div class="firmas">
       <div>
         <p><b>Firma Estudiante</b></p>
@@ -127,92 +97,79 @@ canvas{border:1px solid #ccc;border-radius:10px;width:100%;max-width:300px;heigh
       </div>
     </div>
 
-    <button onclick="guardar()">Enviar Postulación</button>
+    <button onclick="guardarYEnviar()">Enviar Postulación</button>
   </div>
 </div>
 
-<footer>
-© 2025 Red Crecemos — Liceo Teniente Dagoberto Godoy Nº3. Sitio desarrollado por Benjamín González.
-</footer>
+<footer>© 2025 Red Crecemos — Liceo Teniente Dagoberto Godoy Nº3.</footer>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6pyBtVJ0cDGie0G2HI-3-kr6ClOULUOUJcbcTEHdjMle7E2NP8irJiQDzxLn8R6QQDg/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzphz-C2GRD-DDEEO0IlsqkzQM0F-Q80Z84AIZUg56snz4h3GpK2Gdq6DRBPuPKGoST5Q/exec"; // ← cambia esto
 
 function validarBloque(b){
-  const selects=document.querySelectorAll(`[id^="${b}_op"]`);
+  const s=document.querySelectorAll(`[id^="${b}_op"]`);
   const usados=new Set();
-  selects.forEach(sel=>{
-    if(sel.value && usados.has(sel.value)){
-      alert("⚠️ No puedes repetir el número de preferencia en el mismo bloque.");
-      sel.value="";
-    }else if(sel.value){usados.add(sel.value);}
+  s.forEach(x=>{
+    if(x.value&&usados.has(x.value)){alert("⚠️ No puedes repetir número.");x.value="";}
+    else if(x.value)usados.add(x.value);
   });
 }
 
 function initFirma(id){
-  const c=document.getElementById(id);
-  const ctx=c.getContext("2d");
-  let draw=false;
-  const start=()=>draw=true, stop=()=>{draw=false;ctx.beginPath();};
-  const move=e=>{
-    if(!draw)return;
-    const rect=c.getBoundingClientRect();
-    const x=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
-    const y=(e.touches?e.touches[0].clientY:e.clientY)-rect.top;
-    ctx.lineWidth=2;ctx.lineCap="round";ctx.strokeStyle="#000";
-    ctx.lineTo(x,y);ctx.stroke();ctx.beginPath();ctx.moveTo(x,y);
-  };
-  c.addEventListener("mousedown",start);c.addEventListener("mouseup",stop);
-  c.addEventListener("mousemove",move);c.addEventListener("touchstart",start);
-  c.addEventListener("touchend",stop);c.addEventListener("touchmove",move);
+  const c=document.getElementById(id);c.width=c.offsetWidth;c.height=c.offsetHeight;
+  const ctx=c.getContext("2d");let draw=false;
+  const xy=e=>{const r=c.getBoundingClientRect();const x=(e.touches?e.touches[0].clientX:e.clientX)-r.left;const y=(e.touches?e.touches[0].clientY:e.clientY)-r.top;return{x,y}};
+  const start=e=>{draw=true;const {x,y}=xy(e);ctx.beginPath();ctx.moveTo(x,y);}
+  const stop=()=>{draw=false;ctx.beginPath();}
+  const move=e=>{if(!draw)return;e.preventDefault();const {x,y}=xy(e);ctx.lineWidth=2;ctx.lineCap="round";ctx.strokeStyle="#000";ctx.lineTo(x,y);ctx.stroke();ctx.beginPath();ctx.moveTo(x,y);}
+  c.addEventListener("mousedown",start);c.addEventListener("mouseup",stop);c.addEventListener("mousemove",move);
+  c.addEventListener("touchstart",start,{passive:false});c.addEventListener("touchend",stop,{passive:false});c.addEventListener("touchmove",move,{passive:false});
 }
-function limpiarFirma(id){
-  const c=document.getElementById(id);
-  c.getContext("2d").clearRect(0,0,c.width,c.height);
-}
+function limpiarFirma(id){const c=document.getElementById(id);c.getContext("2d").clearRect(0,0,c.width,c.height);}
 window.onload=()=>{initFirma("firma_estudiante");initFirma("firma_apoderado");};
 
-async function guardar(){
+async function guardarYEnviar(){
   const apellido=document.getElementById("apellido").value.trim();
   const nombre=document.getElementById("nombre").value.trim();
-  const rutEst=document.getElementById("rut_estudiante").value.trim();
+  const rut=document.getElementById("rut_estudiante").value.trim();
   const curso=document.getElementById("curso").value.trim();
   const apoderado=document.getElementById("apoderado").value.trim();
   const rutApo=document.getElementById("rut_apoderado").value.trim();
 
-  if(!apellido||!nombre||!rutEst||!curso||!apoderado||!rutApo)
-    return alert("Completa todos los datos personales antes de enviar.");
+  if(!apellido||!nombre||!rut||!curso||!apoderado||!rutApo)
+    return alert("Completa todos los datos.");
 
-  const nombreCompleto=`${apellido.toUpperCase()} ${nombre.charAt(0).toUpperCase()+nombre.slice(1)}`;
+  const form=document.getElementById("formulario");
+  const canvas=await html2canvas(form,{scale:2,useCORS:true});
+  const imgData=canvas.toDataURL("image/png");
 
-  const bloques=["b1","b2","b3"];
-  for(const b of bloques){
-    const vals=Array.from(document.querySelectorAll(`[id^="${b}_op"]`)).map(s=>s.value);
-    if(new Set(vals).size<3||vals.includes(""))return alert(`⚠️ En el ${b.replace('b','Bloque ')} debes usar 1, 2 y 3 sin repetir.`);
-  }
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF("p","pt","a4");
+  const w = pdf.internal.pageSize.getWidth();
+  const h = (canvas.height * w) / canvas.width;
+  pdf.addImage(imgData, "PNG", 0, 0, w, h);
+  const pdfBase64 = pdf.output("datauristring");
 
-  const firmaEst=document.getElementById("firma_estudiante").toDataURL("image/png");
-  const firmaApo=document.getElementById("firma_apoderado").toDataURL("image/png");
-
-  const params=new FormData();
-  params.append("nombre",nombreCompleto);
-  params.append("rutEstudiante",rutEst);
-  params.append("curso",curso);
-  params.append("apoderado",apoderado);
-  params.append("rutApoderado",rutApo);
-  params.append("bloque1",`Geografía:${b1_op1.value} / Democracia:${b1_op2.value} / Estética:${b1_op3.value}`);
-  params.append("bloque2",`Estadística:${b2_op1.value} / Física:${b2_op2.value} / Biología:${b2_op3.value}`);
-  params.append("bloque3",`Música:${b3_op1.value} / Artes:${b3_op2.value} / Economía:${b3_op3.value}`);
-  params.append("firmaEst",firmaEst);
-  params.append("firmaApo",firmaApo);
+  const p=new FormData();
+  p.append("nombre",`${apellido.toUpperCase()} ${nombre}`);
+  p.append("rutEstudiante",rut);
+  p.append("curso",curso);
+  p.append("apoderado",apoderado);
+  p.append("rutApoderado",rutApo);
+  p.append("b1_op1",b1_op1.value);p.append("b1_op2",b1_op2.value);p.append("b1_op3",b1_op3.value);
+  p.append("b2_op1",b2_op1.value);p.append("b2_op2",b2_op2.value);p.append("b2_op3",b2_op3.value);
+  p.append("b3_op1",b3_op1.value);p.append("b3_op2",b3_op2.value);p.append("b3_op3",b3_op3.value);
+  p.append("documento",pdfBase64);
 
   try{
-    const res=await fetch(SCRIPT_URL,{method:"POST",body:params});
-    const text=await res.text();
-    alert(text);
-    document.querySelectorAll("input,select").forEach(i=>i.value="");
-    limpiarFirma("firma_estudiante");limpiarFirma("firma_apoderado");
-  }catch(e){alert("Error al guardar: "+e.message);}
+    const res=await fetch(SCRIPT_URL,{method:"POST",body:p});
+    const txt=await res.text();
+    alert(txt);
+    window.print();
+  }catch(e){
+    console.error(e);
+    alert("❌ Error al guardar o conectar con el servidor: "+e.message);
+  }
 }
 </script>
 </body>
