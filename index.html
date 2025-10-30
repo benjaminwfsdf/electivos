@@ -254,6 +254,20 @@ canvas{
   text-align: center;
   border: 1px solid #cce0ff;
 }
+
+/* Estilos para el selector de curso */
+.curso-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 5px;
+}
+
+.curso-selector select {
+  width: auto;
+  min-width: 100px;
+  margin: 0;
+}
 </style>
 </head>
 
@@ -275,22 +289,29 @@ canvas{
     <h1>CARTA DE POSTULACIÓN A ELECTIVIDADES 2025</h1>
     <p><b>Selección de electivos de formación diferenciada Humanista-Científico 2025</b></p>
 
-   <p>Yo, 
-  <input id="apellido" placeholder="Primer apellido, Segundo apellido"> 
-  <input id="nombre" placeholder="Primer nombre, Segundo nombre">,
-  RUT: <input id="rut_estudiante" placeholder="12.345.678-9" style="max-width:200px;">,
-  estudiante del curso 2°M 2025, declaro por medio de este documento, mi intención de electividad para el año 2026 en el establecimiento Liceo Teniente Dagoberto Godoy N°3 Lo Prado.
-</p>
+    <p>Yo, 
+      <input id="apellido" placeholder="Primer apellido, Segundo apellido"> 
+      <input id="nombre" placeholder="Primer nombre, Segundo nombre">,
+      RUT: <input id="rut_estudiante" placeholder="12.345.678-9" style="max-width:200px;">,
+      estudiante del curso 
+      <span class="curso-selector">
+        <select id="curso">
+          <option value="2°M A 2025">2°M A 2025</option>
+          <option value="2°M B 2025">2°M B 2025</option>
+          <option value="2°M C 2025">2°M C 2025</option>
+        </select>
+      </span>
+      , declaro por medio de este documento, mi intención de electividad para el año 2026 en el establecimiento Liceo Teniente Dagoberto Godoy N°3 Lo Prado.
+    </p>
 
-<p>En conocimiento de mi apoderado 
-  <input id="apoderado" placeholder="Primer apellido, Segundo apellido, Primer nombre, Segundo nombre">
-  RUT: <input id="rut_apoderado" placeholder="12.345.678-9" style="max-width:220px;">, procedo a declarar mi elección para las siguientes asignaturas electivas:
-</p>
+    <p>En conocimiento de mi apoderado 
+      <input id="apoderado" placeholder="Primer apellido, Segundo apellido, Primer nombre, Segundo nombre">
+      RUT: <input id="rut_apoderado" placeholder="12.345.678-9" style="max-width:220px;">, procedo a declarar mi elección para las siguientes asignaturas electivas:
+    </p>
 
-<div class="instruccion-bloques">
-  <b>Para esto debo numerar los tres bloques, en donde el 1 será su primera elección y el número 3 será el electivo de menor preferencia.</b>
-</div>
-
+    <div class="instruccion-bloques">
+      <b>Para esto debo numerar los tres bloques, en donde el 1 será su primera elección y el número 3 será el electivo de menor preferencia.</b>
+    </div>
 
     <div class="bloque-grid">
       <div class="bloque-item">
@@ -479,6 +500,7 @@ async function guardarYEnviar(){
     const apellido = document.getElementById("apellido").value.trim();
     const nombre = document.getElementById("nombre").value.trim();
     const rut = document.getElementById("rut_estudiante").value.trim();
+    const curso = document.getElementById("curso").value;
     const apoderado = document.getElementById("apoderado").value.trim();
     const rutApo = document.getElementById("rut_apoderado").value.trim();
 
@@ -551,7 +573,7 @@ async function guardarYEnviar(){
     const data = new FormData();
     data.append("nombre", `${apellido.toUpperCase()} ${nombre}`);
     data.append("rutEstudiante", rut);
-    data.append("curso", "2°M 2025");
+    data.append("curso", curso);
     data.append("apoderado", apoderado);
     data.append("rutApoderado", rutApo);
     data.append("b1_op1", document.getElementById('b1_op1').value);
