@@ -289,6 +289,30 @@ canvas{
   color: #27ae60;
   border: 1px solid #82e0aa;
 }
+
+/* Estilos para campos requeridos */
+.campo-requerido {
+  border-color: #f58b1f !important;
+  background-color: #fffaf3 !important;
+}
+
+.campo-error {
+  border-color: #d63031 !important;
+  background-color: #ffeaea !important;
+}
+
+.texto-error {
+  color: #d63031;
+  font-size: 11px;
+  margin-top: -8px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.firma-vacia {
+  border-color: #d63031 !important;
+  background-color: #ffeaea !important;
+}
 </style>
 </head>
 
@@ -313,12 +337,12 @@ canvas{
     <div id="mensaje-rut" class="mensaje-validacion" style="display:none;"></div>
 
     <p>Yo, 
-      <input id="apellido" placeholder="Primer apellido, Segundo apellido"> 
-      <input id="nombre" placeholder="Primer nombre, Segundo nombre">
-      RUT: <input id="rut_estudiante" placeholder="12.345.678-9" style="max-width:200px;" onblur="validarRUTUnico()">,
+      <input id="apellido" placeholder="Primer apellido, Segundo apellido" class="campo-requerido"> 
+      <input id="nombre" placeholder="Primer nombre, Segundo nombre" class="campo-requerido">
+      RUT: <input id="rut_estudiante" placeholder="12.345.678-9" style="max-width:200px;" class="campo-requerido" onblur="validarRUTUnico()">,
       estudiante del curso 
       <span class="curso-selector">
-        <select id="curso">
+        <select id="curso" class="campo-requerido">
           <option value="" selected disabled>-- Selecciona tu curso --</option>
           <option value="2°M A 2025">2°M A 2025</option>
           <option value="2°M B 2025">2°M B 2025</option>
@@ -329,12 +353,13 @@ canvas{
     </p>
 
     <p>En conocimiento de mi apoderado 
-      <input id="apoderado" placeholder="Primer apellido, Segundo apellido, Primer nombre, Segundo nombre">
-      RUT: <input id="rut_apoderado" placeholder="12.345.678-9" style="max-width:220px;">, procedo a declarar mi elección para las siguientes asignaturas electivas:
+      <input id="apoderado" placeholder="Primer apellido, Segundo apellido, Primer nombre, Segundo nombre" class="campo-requerido">
+      RUT: <input id="rut_apoderado" placeholder="12.345.678-9" style="max-width:220px;" class="campo-requerido">, procedo a declarar mi elección para las siguientes asignaturas electivas:
     </p>
 
     <div class="instruccion-bloques">
       <b>Para esto debo numerar los tres bloques, en donde el 1 será su primera elección y el número 3 será el electivo de menor preferencia.</b>
+      <br><span class="texto-error">* Debes completar todas las preferencias en cada bloque</span>
     </div>
 
     <div class="bloque-grid">
@@ -345,22 +370,23 @@ canvas{
         </div>
         <div class="opcion-item">
           <label>Geografía, Territorio y Desafíos Socioambientales</label>
-          <select id="b1_op1" onchange="validarBloque('b1')">
-            <option></option><option>1</option><option>2</option><option>3</option>
+          <select id="b1_op1" onchange="validarBloque('b1')" class="campo-requerido">
+            <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
         <div class="opcion-item">
           <label>Participación y Argumentación en Democracia</label>
-          <select id="b1_op2" onchange="validarBloque('b1')">
-            <option></option><option>1</option><option>2</option><option>3</option>
+          <select id="b1_op2" onchange="validarBloque('b1')" class="campo-requerido">
+            <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
         <div class="opcion-item">
           <label>Estética</label>
-          <select id="b1_op3" onchange="validarBloque('b1')">
-            <option></option><option>1</option><option>2</option><option>3</option>
+          <select id="b1_op3" onchange="validarBloque('b1')" class="campo-requerido">
+            <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
+        <div id="error-b1" class="texto-error" style="display:none; text-align:center;">⚠️ Completa todas las preferencias del Bloque 1</div>
       </div>
 
       <div class="bloque-item">
@@ -370,22 +396,23 @@ canvas{
         </div>
         <div class="opcion-item">
           <label>Probabilidades y Estadísticas Descriptivas e Inferencial</label>
-          <select id="b2_op1" onchange="validarBloque('b2')">
-            <option></option><option>1</option><option>2</option><option>3</option>
+          <select id="b2_op1" onchange="validarBloque('b2')" class="campo-requerido">
+            <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
         <div class="opcion-item">
           <label>Física</label>
-          <select id="b2_op2" onchange="validarBloque('b2')">
-            <option></option><option>1</option><option>2</option><option>3</option>
+          <select id="b2_op2" onchange="validarBloque('b2')" class="campo-requerido">
+            <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
         <div class="opcion-item">
           <label>Biología de los Ecosistemas</label>
-          <select id="b2_op3" onchange="validarBloque('b2')">
-            <option></option><option>1</option><option>2</option><option>3</option>
+          <select id="b2_op3" onchange="validarBloque('b2')" class="campo-requerido">
+            <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
+        <div id="error-b2" class="texto-error" style="display:none; text-align:center;">⚠️ Completa todas las preferencias del Bloque 2</div>
       </div>
 
       <div class="bloque-item">
@@ -395,22 +422,23 @@ canvas{
         </div>
         <div class="opcion-item">
           <label>Creación y Composición Musical</label>
-          <select id="b3_op1" onchange="validarBloque('b3')">
-            <option></option><option>1</option><option>2</option><option>3</option>
+          <select id="b3_op1" onchange="validarBloque('b3')" class="campo-requerido">
+            <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
         <div class="opcion-item">
           <label>Artes Visuales y Audiovisuales</label>
-          <select id="b3_op2" onchange="validarBloque('b3')">
-            <option></option><option>1</option><option>2</option><option>3</option>
+          <select id="b3_op2" onchange="validarBloque('b3')" class="campo-requerido">
+            <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
         <div class="opcion-item">
           <label>Economía y Sociedad</label>
-          <select id="b3_op3" onchange="validarBloque('b3')">
-            <option></option><option>1</option><option>2</option><option>3</option>
+          <select id="b3_op3" onchange="validarBloque('b3')" class="campo-requerido">
+            <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
+        <div id="error-b3" class="texto-error" style="display:none; text-align:center;">⚠️ Completa todas las preferencias del Bloque 3</div>
       </div>
     </div>
 
@@ -421,20 +449,22 @@ canvas{
 
     <div class="firmas-container">
       <div class="firma-box">
-        <b>Firma Estudiante</b>
+        <b>Firma Estudiante <span class="texto-error">*</span></b>
         <canvas id="firma_estudiante"></canvas>
         <button class="clear-btn" onclick="limpiarFirma('firma_estudiante')">Limpiar</button>
         <div style="margin-top: 5px; font-size: 11px;">RUT: <span id="rut_estudiante_display"></span></div>
+        <div id="error-firma-estudiante" class="texto-error" style="display:none;">⚠️ Firma requerida</div>
       </div>
       <div class="firma-box">
-        <b>Firma Apoderado</b>
+        <b>Firma Apoderado <span class="texto-error">*</span></b>
         <canvas id="firma_apoderado"></canvas>
         <button class="clear-btn" onclick="limpiarFirma('firma_apoderado')">Limpiar</button>
         <div style="margin-top: 5px; font-size: 11px;">RUT: <span id="rut_apoderado_display"></span></div>
+        <div id="error-firma-apoderado" class="texto-error" style="display:none;">⚠️ Firma requerida</div>
       </div>
     </div>
 
-    <button onclick="guardarYEnviar()" id="btn-enviar">Enviar Postulación</button>
+    <button onclick="validarFormularioCompleto()" id="btn-enviar">Enviar Postulación</button>
   </div>
 </div>
 
@@ -443,6 +473,8 @@ canvas{
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwj39DtDzexrYa1MpBCJrnBG63Kzm1PkhkSs2wAtohaIxC_P9iqRi6LOKeMvallZx2Idg/exec";
 let rutYaEnviado = false;
+let firmaEstudianteDibujada = false;
+let firmaApoderadoDibujada = false;
 
 // Función para validar RUT único antes de enviar
 async function validarRUTUnico() {
@@ -486,6 +518,7 @@ function validarBloque(b){
   const selects = document.querySelectorAll(`[id^="${b}_op"]`);
   const usados = new Set();
   let hasError = false;
+  let todosLlenos = true;
   
   selects.forEach(sel => {
     if(sel.value && usados.has(sel.value)){
@@ -495,8 +528,20 @@ function validarBloque(b){
     } else if(sel.value){
       usados.add(sel.value);
     }
+    
+    // Verificar si todos los campos están llenos
+    if (!sel.value) {
+      todosLlenos = false;
+    }
   });
-  return !hasError;
+  
+  // Mostrar/ocultar mensaje de error del bloque
+  const errorDiv = document.getElementById(`error-${b}`);
+  if (errorDiv) {
+    errorDiv.style.display = todosLlenos ? 'none' : 'block';
+  }
+  
+  return !hasError && todosLlenos;
 }
 
 function initFirma(id){
@@ -513,8 +558,26 @@ function initFirma(id){
     return {x, y};
   };
   
-  const start = e => { d = true; const {x, y} = get(e); ctx.beginPath(); ctx.moveTo(x, y); }
+  const start = e => { 
+    d = true; 
+    const {x, y} = get(e); 
+    ctx.beginPath(); 
+    ctx.moveTo(x, y); 
+    
+    // Marcar como dibujada
+    if (id === 'firma_estudiante') {
+      firmaEstudianteDibujada = true;
+      document.getElementById('error-firma-estudiante').style.display = 'none';
+      c.classList.remove('firma-vacia');
+    } else if (id === 'firma_apoderado') {
+      firmaApoderadoDibujada = true;
+      document.getElementById('error-firma-apoderado').style.display = 'none';
+      c.classList.remove('firma-vacia');
+    }
+  }
+  
   const stop = () => { d = false; ctx.beginPath(); }
+  
   const move = e => { 
     if(!d) return; 
     e.preventDefault(); 
@@ -539,20 +602,116 @@ function initFirma(id){
 function limpiarFirma(id){
   const c = document.getElementById(id);
   c.getContext("2d").clearRect(0, 0, c.width, c.height);
+  
+  if (id === 'firma_estudiante') {
+    firmaEstudianteDibujada = false;
+    document.getElementById('error-firma-estudiante').style.display = 'block';
+    c.classList.add('firma-vacia');
+  } else if (id === 'firma_apoderado') {
+    firmaApoderadoDibujada = false;
+    document.getElementById('error-firma-apoderado').style.display = 'block';
+    c.classList.add('firma-vacia');
+  }
+}
+
+// Validar campos de texto en tiempo real
+function validarCampoTexto(id) {
+  const campo = document.getElementById(id);
+  const valor = campo.value.trim();
+  
+  if (!valor) {
+    campo.classList.add('campo-error');
+    return false;
+  } else {
+    campo.classList.remove('campo-error');
+    return true;
+  }
+}
+
+// Validar selección de curso
+function validarCurso() {
+  const curso = document.getElementById('curso');
+  const valor = curso.value;
+  
+  if (!valor) {
+    curso.classList.add('campo-error');
+    return false;
+  } else {
+    curso.classList.remove('campo-error');
+    return true;
+  }
+}
+
+// Validar TODOS los campos antes de enviar
+function validarFormularioCompleto() {
+  let formularioValido = true;
+  
+  // Validar campos de texto
+  const camposTexto = ['apellido', 'nombre', 'rut_estudiante', 'apoderado', 'rut_apoderado'];
+  camposTexto.forEach(campo => {
+    if (!validarCampoTexto(campo)) {
+      formularioValido = false;
+    }
+  });
+  
+  // Validar curso
+  if (!validarCurso()) {
+    formularioValido = false;
+  }
+  
+  // Validar bloques
+  const bloques = ['b1', 'b2', 'b3'];
+  bloques.forEach(bloque => {
+    if (!validarBloque(bloque)) {
+      formularioValido = false;
+    }
+  });
+  
+  // Validar firmas
+  if (!firmaEstudianteDibujada) {
+    document.getElementById('error-firma-estudiante').style.display = 'block';
+    document.getElementById('firma_estudiante').classList.add('firma-vacia');
+    formularioValido = false;
+  }
+  
+  if (!firmaApoderadoDibujada) {
+    document.getElementById('error-firma-apoderado').style.display = 'block';
+    document.getElementById('firma_apoderado').classList.add('firma-vacia');
+    formularioValido = false;
+  }
+  
+  if (formularioValido) {
+    guardarYEnviar();
+  } else {
+    alert("⚠️ Por favor, completa todos los campos obligatorios antes de enviar.");
+    // Scroll al primer error
+    const primerError = document.querySelector('.campo-error, .firma-vacia');
+    if (primerError) {
+      primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
 }
 
 // Actualizar RUT en tiempo real
 document.getElementById('rut_estudiante').addEventListener('input', function(e) {
   document.getElementById('rut_estudiante_display').textContent = e.target.value;
+  validarCampoTexto('rut_estudiante');
 });
 
 document.getElementById('rut_apoderado').addEventListener('input', function(e) {
   document.getElementById('rut_apoderado_display').textContent = e.target.value;
+  validarCampoTexto('rut_apoderado');
 });
+
+// Agregar validación en tiempo real para otros campos
+document.getElementById('apellido').addEventListener('blur', function() { validarCampoTexto('apellido'); });
+document.getElementById('nombre').addEventListener('blur', function() { validarCampoTexto('nombre'); });
+document.getElementById('apoderado').addEventListener('blur', function() { validarCampoTexto('apoderado'); });
+document.getElementById('curso').addEventListener('change', validarCurso);
 
 // ✅ FUNCIÓN OPTIMIZADA - MÁS RÁPIDA Y CON MEJOR MANEJO DE ERRORES
 async function guardarYEnviar(){
-  const btn = event.target;
+  const btn = document.getElementById('btn-enviar');
   const originalText = btn.textContent;
   
   try{
@@ -575,20 +734,6 @@ async function guardarYEnviar(){
       return;
     }
 
-    if(!apellido || !nombre || !rut || !curso || !apoderado || !rutApo) {
-      alert("⚠️ Completa todos los datos, incluyendo la selección de curso.");
-      btn.textContent = originalText;
-      btn.disabled = false;
-      return;
-    }
-
-    // Validar bloques
-    if (!validarBloque('b1') || !validarBloque('b2') || !validarBloque('b3')) {
-      btn.textContent = originalText;
-      btn.disabled = false;
-      return;
-    }
-
     const form = document.getElementById("formulario");
     
     btn.textContent = "⏳ Capturando pantalla...";
@@ -606,6 +751,17 @@ async function guardarYEnviar(){
         // Ocultar botones durante la captura para mejor apariencia
         const buttons = clonedDoc.querySelectorAll('button, .clear-btn');
         buttons.forEach(btn => btn.style.display = 'none');
+        
+        // Ocultar mensajes de error durante la captura
+        const mensajesError = clonedDoc.querySelectorAll('.texto-error');
+        mensajesError.forEach(msg => msg.style.display = 'none');
+        
+        // Quitar estilos de error durante la captura
+        const camposError = clonedDoc.querySelectorAll('.campo-error, .firma-vacia');
+        camposError.forEach(campo => {
+          campo.classList.remove('campo-error', 'firma-vacia');
+          campo.classList.add('campo-requerido');
+        });
       }
     });
     
@@ -701,6 +857,10 @@ async function guardarYEnviar(){
 window.onload = () => {
   initFirma("firma_estudiante");
   initFirma("firma_apoderado");
+  
+  // Inicializar firmas como vacías
+  document.getElementById('firma_estudiante').classList.add('firma-vacia');
+  document.getElementById('firma_apoderado').classList.add('firma-vacia');
 };
 </script>
 </body>
