@@ -268,6 +268,27 @@ canvas{
   min-width: 100px;
   margin: 0;
 }
+
+/* Estilos para mensajes de validación */
+.mensaje-validacion {
+  padding: 10px;
+  border-radius: 8px;
+  margin: 10px 0;
+  text-align: center;
+  font-weight: 600;
+}
+
+.mensaje-error {
+  background: #ffeaea;
+  color: #d63031;
+  border: 1px solid #fab1a0;
+}
+
+.mensaje-exito {
+  background: #e8f6ef;
+  color: #27ae60;
+  border: 1px solid #82e0aa;
+}
 </style>
 </head>
 
@@ -289,10 +310,12 @@ canvas{
     <h1>CARTA DE POSTULACIÓN A ELECTIVIDADES 2026</h1>
     <p><b>Selección de electivos de formación diferenciada Humanista-Científico para el 2026</b></p>
 
+    <div id="mensaje-rut" class="mensaje-validacion" style="display:none;"></div>
+
     <p>Yo, 
       <input id="apellido" placeholder="Primer apellido, Segundo apellido"> 
-      <input id="nombre" placeholder="Primer nombre, Segundo nombre">,
-      RUT: <input id="rut_estudiante" placeholder="12.345.678-9" style="max-width:200px;">,
+      <input id="nombre" placeholder="Primer nombre, Segundo nombre">
+      RUT: <input id="rut_estudiante" placeholder="12.345.678-9" style="max-width:200px;" onblur="validarRUTUnico()">,
       estudiante del curso 
       <span class="curso-selector">
         <select id="curso">
@@ -411,14 +434,53 @@ canvas{
       </div>
     </div>
 
-    <button onclick="guardarYEnviar()">Enviar Postulación</button>
+    <button onclick="guardarYEnviar()" id="btn-enviar">Enviar Postulación</button>
   </div>
 </div>
 
 <footer>© 2025 Red Crecemos — Liceo Teniente Dagoberto Godoy Nº3.</footer>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzwbEiIRQaLjEtgFHjeCee6IYzcuppTSTrgEZ4pGh8mo0AExawIby2qdW9MMF33r-zOA/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwj39DtDzexrYa1MpBCJrnBG63Kzm1PkhkSs2wAtohaIxC_P9iqRi6LOKeMvallZx2Idg/exec";
+let rutYaEnviado = false;
+
+// Función para validar RUT único antes de enviar
+async function validarRUTUnico() {
+  const rutInput = document.getElementById('rut_estudiante');
+  const rut = rutInput.value.trim();
+  const mensajeDiv = document.getElementById('mensaje-rut');
+  const btnEnviar = document.getElementById('btn-enviar');
+  
+  if (!rut) {
+    mensajeDiv.style.display = 'none';
+    btnEnviar.disabled = false;
+    return true;
+  }
+  
+  try {
+    const response = await fetch(`${SCRIPT_URL}?action=verificarRUT&rut=${encodeURIComponent(rut)}`);
+    const resultado = await response.text();
+    
+    if (resultado === 'EXISTE') {
+      mensajeDiv.innerHTML = '❌ Este RUT ya ha enviado una postulación anteriormente.';
+      mensajeDiv.className = 'mensaje-validacion mensaje-error';
+      mensajeDiv.style.display = 'block';
+      btnEnviar.disabled = true;
+      rutYaEnviado = true;
+      return false;
+    } else {
+      mensajeDiv.style.display = 'none';
+      btnEnviar.disabled = false;
+      rutYaEnviado = false;
+      return true;
+    }
+  } catch (error) {
+    console.error('Error al verificar RUT:', error);
+    mensajeDiv.style.display = 'none';
+    btnEnviar.disabled = false;
+    return true;
+  }
+}
 
 function validarBloque(b){
   const selects = document.querySelectorAll(`[id^="${b}_op"]`);
@@ -504,6 +566,14 @@ async function guardarYEnviar(){
     const curso = document.getElementById("curso").value;
     const apoderado = document.getElementById("apoderado").value.trim();
     const rutApo = document.getElementById("rut_apoderado").value.trim();
+
+    // Validación final del RUT
+    if (!await validarRUTUnico()) {
+      alert("❌ No se puede enviar el formulario. Este RUT ya tiene una postulación registrada.");
+      btn.textContent = originalText;
+      btn.disabled = false;
+      return;
+    }
 
     if(!apellido || !nombre || !rut || !curso || !apoderado || !rutApo) {
       alert("⚠️ Completa todos los datos, incluyendo la selección de curso.");
