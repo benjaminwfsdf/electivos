@@ -161,7 +161,7 @@ canvas{
 /* Layout optimizado para los bloques */
 .bloque-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 15px;
   margin: 15px 0;
 }
@@ -187,10 +187,11 @@ canvas{
 .opcion-item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 8px;
   padding-bottom: 6px;
   border-bottom: 1px dashed #e1e8f7;
+  gap: 10px;
 }
 
 .opcion-item:last-child {
@@ -202,13 +203,18 @@ canvas{
   flex: 1;
   margin: 0;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 11px;
+  line-height: 1.3;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
 }
 
 .opcion-item select {
-  width: 70px;
+  width: 60px;
   margin: 0;
   padding: 6px;
+  flex-shrink: 0;
 }
 
 .firmas-container {
@@ -307,11 +313,37 @@ canvas{
   margin-top: -8px;
   margin-bottom: 8px;
   display: block;
+  text-align: center;
+  line-height: 1.3;
 }
 
 .firma-vacia {
   border-color: #d63031 !important;
   background-color: #ffeaea !important;
+}
+
+/* Mejoras específicas para textos largos */
+.texto-materia {
+  font-size: 11px;
+  line-height: 1.3;
+  hyphens: auto;
+  word-wrap: break-word;
+}
+
+.instruccion-compacta {
+  font-size: 10px;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+/* Ajustes para impresión */
+@media print {
+  .opcion-item label {
+    font-size: 10px;
+  }
+  .texto-error {
+    display: none !important;
+  }
 }
 </style>
 </head>
@@ -359,86 +391,86 @@ canvas{
 
     <div class="instruccion-bloques">
       <b>Para esto debo numerar los tres bloques, en donde el 1 será su primera elección y el número 3 será el electivo de menor preferencia.</b>
-      <br><span class="texto-error">* Debes completar todas las preferencias en cada bloque</span>
+      <div class="texto-error">* Debes completar todas las preferencias en cada bloque</div>
     </div>
 
     <div class="bloque-grid">
       <div class="bloque-item">
         <h3>BLOQUE 1</h3>
-        <div style="text-align: center; margin-bottom: 10px; font-size: 11px; color: #666;">
+        <div class="instruccion-compacta">
           <b>1-Primera preferencia | 2-Segunda preferencia | 3-Tercera preferencia</b>
         </div>
         <div class="opcion-item">
-          <label>Geografía, Territorio y Desafíos Socioambientales</label>
+          <label class="texto-materia">Geografía, Territorio y Desafíos Socioambientales</label>
           <select id="b1_op1" onchange="validarBloque('b1')" class="campo-requerido">
             <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
         <div class="opcion-item">
-          <label>Participación y Argumentación en Democracia</label>
+          <label class="texto-materia">Participación y Argumentación en Democracia</label>
           <select id="b1_op2" onchange="validarBloque('b1')" class="campo-requerido">
             <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
         <div class="opcion-item">
-          <label>Estética</label>
+          <label class="texto-materia">Estética</label>
           <select id="b1_op3" onchange="validarBloque('b1')" class="campo-requerido">
             <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
-        <div id="error-b1" class="texto-error" style="display:none; text-align:center;">⚠️ Completa todas las preferencias del Bloque 1</div>
+        <div id="error-b1" class="texto-error" style="display:none;">⚠️ Completa todas las preferencias del Bloque 1</div>
       </div>
 
       <div class="bloque-item">
         <h3>BLOQUE 2</h3>
-        <div style="text-align: center; margin-bottom: 10px; font-size: 11px; color: #666;">
+        <div class="instruccion-compacta">
           <b>1-Primera preferencia | 2-Segunda preferencia | 3-Tercera preferencia</b>
         </div>
         <div class="opcion-item">
-          <label>Probabilidades y Estadísticas Descriptivas e Inferencial</label>
+          <label class="texto-materia">Probabilidades y Estadísticas Descriptivas e Inferencial</label>
           <select id="b2_op1" onchange="validarBloque('b2')" class="campo-requerido">
             <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
         <div class="opcion-item">
-          <label>Física</label>
+          <label class="texto-materia">Física</label>
           <select id="b2_op2" onchange="validarBloque('b2')" class="campo-requerido">
             <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
         <div class="opcion-item">
-          <label>Biología de los Ecosistemas</label>
+          <label class="texto-materia">Biología de los Ecosistemas</label>
           <select id="b2_op3" onchange="validarBloque('b2')" class="campo-requerido">
             <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
-        <div id="error-b2" class="texto-error" style="display:none; text-align:center;">⚠️ Completa todas las preferencias del Bloque 2</div>
+        <div id="error-b2" class="texto-error" style="display:none;">⚠️ Completa todas las preferencias del Bloque 2</div>
       </div>
 
       <div class="bloque-item">
         <h3>BLOQUE 3</h3>
-        <div style="text-align: center; margin-bottom: 10px; font-size: 11px; color: #666;">
+        <div class="instruccion-compacta">
           <b>1-Primera preferencia | 2-Segunda preferencia | 3-Tercera preferencia</b>
         </div>
         <div class="opcion-item">
-          <label>Creación y Composición Musical</label>
+          <label class="texto-materia">Creación y Composición Musical</label>
           <select id="b3_op1" onchange="validarBloque('b3')" class="campo-requerido">
             <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
         <div class="opcion-item">
-          <label>Artes Visuales y Audiovisuales</label>
+          <label class="texto-materia">Artes Visuales y Audiovisuales</label>
           <select id="b3_op2" onchange="validarBloque('b3')" class="campo-requerido">
             <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
         <div class="opcion-item">
-          <label>Economía y Sociedad</label>
+          <label class="texto-materia">Economía y Sociedad</label>
           <select id="b3_op3" onchange="validarBloque('b3')" class="campo-requerido">
             <option value=""></option><option>1</option><option>2</option><option>3</option>
           </select>
         </div>
-        <div id="error-b3" class="texto-error" style="display:none; text-align:center;">⚠️ Completa todas las preferencias del Bloque 3</div>
+        <div id="error-b3" class="texto-error" style="display:none;">⚠️ Completa todas las preferencias del Bloque 3</div>
       </div>
     </div>
 
