@@ -336,12 +336,31 @@ canvas{
   margin-bottom: 8px;
 }
 
+/* Estilos para validación de RUT */
+.rut-valido {
+  border-color: #27ae60 !important;
+  background-color: #f0fff4 !important;
+}
+
+.rut-invalido {
+  border-color: #d63031 !important;
+  background-color: #ffeaea !important;
+}
+
+.ayuda-rut {
+  font-size: 10px;
+  color: #666;
+  margin-top: -8px;
+  margin-bottom: 8px;
+  display: block;
+}
+
 /* Ajustes para impresión */
 @media print {
   .opcion-item label {
     font-size: 10px;
   }
-  .texto-error {
+  .texto-error, .ayuda-rut {
     display: none !important;
   }
 }
@@ -371,7 +390,8 @@ canvas{
     <p>Yo, 
       <input id="apellido" placeholder="Primer apellido, Segundo apellido" class="campo-requerido"> 
       <input id="nombre" placeholder="Primer nombre, Segundo nombre" class="campo-requerido">
-      RUT: <input id="rut_estudiante" placeholder="12.345.678-9" style="max-width:200px;" class="campo-requerido" onblur="validarRUTUnico()">,
+      RUT: <input id="rut_estudiante" placeholder="12345678-9" style="max-width:200px;" class="campo-requerido" onblur="validarFormatoRUT('rut_estudiante')">
+      <span class="ayuda-rut">Formato: 12345678-9 (guión obligatorio)</span>,
       estudiante del curso 
       <span class="curso-selector">
         <select id="curso" class="campo-requerido">
@@ -386,12 +406,12 @@ canvas{
 
     <p>En conocimiento de mi apoderado 
       <input id="apoderado" placeholder="Primer apellido, Segundo apellido, Primer nombre, Segundo nombre" class="campo-requerido">
-      RUT: <input id="rut_apoderado" placeholder="12.345.678-9" style="max-width:220px;" class="campo-requerido">, procedo a declarar mi elección para las siguientes asignaturas electivas:
+      RUT: <input id="rut_apoderado" placeholder="12345678-9" style="max-width:220px;" class="campo-requerido" onblur="validarFormatoRUT('rut_apoderado')">
+      <span class="ayuda-rut">Formato: 12345678-9 (guión obligatorio)</span>, procedo a declarar mi elección para las siguientes asignaturas electivas:
     </p>
 
     <div class="instruccion-bloques">
       <b>Para esto debo numerar los tres bloques, en donde el 1 será mi primera elección y el número 3 será mi electivo de menor preferencia.</b>
-    
     </div>
 
     <div class="bloque-grid">
@@ -508,6 +528,36 @@ let rutYaEnviado = false;
 let firmaEstudianteDibujada = false;
 let firmaApoderadoDibujada = false;
 
+// Función para validar formato de RUT con guión obligatorio
+function validarFormatoRUT(idCampo) {
+  const campo = document.getElementById(idCampo);
+  const rut = campo.value.trim();
+  
+  // Expresión regular para validar formato: números + guión + número o K
+  const regexRUT = /^[0-9]{7,8}-[0-9kK]{1}$/;
+  
+  if (!rut) {
+    campo.classList.remove('rut-valido', 'rut-invalido');
+    return false;
+  }
+  
+  if (regexRUT.test(rut)) {
+    campo.classList.remove('rut-invalido');
+    campo.classList.add('rut-valido');
+    return true;
+  } else {
+    campo.classList.remove('rut-valido');
+    campo.classList.add('rut-invalido');
+    
+    // Mostrar mensaje de ayuda si el usuario está escribiendo
+    if (rut.length > 0 && !rut.includes('-')) {
+      campo.setAttribute('title', 'El RUT debe incluir un guión (ej: 12345678-9)');
+    }
+    
+    return false;
+  }
+}
+
 // Función para validar RUT único antes de enviar
 async function validarRUTUnico() {
   const rutInput = document.getElementById('rut_estudiante');
@@ -519,6 +569,15 @@ async function validarRUTUnico() {
     mensajeDiv.style.display = 'none';
     btnEnviar.disabled = false;
     return true;
+  }
+  
+  // Primero validar formato
+  if (!validarFormatoRUT('rut_estudiante')) {
+    mensajeDiv.innerHTML = '❌ Formato de RUT inválido. Debe incluir guión (ej: 12345678-9).';
+    mensajeDiv.className = 'mensaje-validacion mensaje-error';
+    mensajeDiv.style.display = 'block';
+    btnEnviar.disabled = true;
+    return false;
   }
   
   try {
@@ -679,12 +738,23 @@ function validarFormularioCompleto() {
   let formularioValido = true;
   
   // Validar campos de texto
-  const camposTexto = ['apellido', 'nombre', 'rut_estudiante', 'apoderado', 'rut_apoderado'];
+  const camposTexto = ['apellido', 'nombre', 'apoderado'];
   camposTexto.forEach(campo => {
     if (!validarCampoTexto(campo)) {
       formularioValido = false;
     }
   });
+  
+  // Validar RUTs con formato correcto
+  if (!validarFormatoRUT('rut_estudiante')) {
+    formularioValido = false;
+    document.getElementById('rut_estudiante').classList.add('campo-error');
+  }
+  
+  if (!validarFormatoRUT('rut_apoderado')) {
+    formularioValido = false;
+    document.getElementById('rut_apoderado').classList.add('campo-error');
+  }
   
   // Validar curso
   if (!validarCurso()) {
@@ -715,9 +785,9 @@ function validarFormularioCompleto() {
   if (formularioValido) {
     guardarYEnviar();
   } else {
-    alert("⚠️ Por favor, completa todos los campos obligatorios antes de enviar.");
+    alert("⚠️ Por favor, completa todos los campos obligatorios antes de enviar. Asegúrate de que los RUT tengan el formato correcto (12345678-9).");
     // Scroll al primer error
-    const primerError = document.querySelector('.campo-error, .firma-vacia');
+    const primerError = document.querySelector('.campo-error, .firma-vacia, .rut-invalido');
     if (primerError) {
       primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
@@ -727,12 +797,12 @@ function validarFormularioCompleto() {
 // Actualizar RUT en tiempo real
 document.getElementById('rut_estudiante').addEventListener('input', function(e) {
   document.getElementById('rut_estudiante_display').textContent = e.target.value;
-  validarCampoTexto('rut_estudiante');
+  validarFormatoRUT('rut_estudiante');
 });
 
 document.getElementById('rut_apoderado').addEventListener('input', function(e) {
   document.getElementById('rut_apoderado_display').textContent = e.target.value;
-  validarCampoTexto('rut_apoderado');
+  validarFormatoRUT('rut_apoderado');
 });
 
 // Agregar validación en tiempo real para otros campos
@@ -785,13 +855,20 @@ async function guardarYEnviar(){
         buttons.forEach(btn => btn.style.display = 'none');
         
         // Ocultar mensajes de error durante la captura
-        const mensajesError = clonedDoc.querySelectorAll('.texto-error');
+        const mensajesError = clonedDoc.querySelectorAll('.texto-error, .ayuda-rut');
         mensajesError.forEach(msg => msg.style.display = 'none');
         
         // Quitar estilos de error durante la captura
-        const camposError = clonedDoc.querySelectorAll('.campo-error, .firma-vacia');
+        const camposError = clonedDoc.querySelectorAll('.campo-error, .firma-vacia, .rut-invalido');
         camposError.forEach(campo => {
-          campo.classList.remove('campo-error', 'firma-vacia');
+          campo.classList.remove('campo-error', 'firma-vacia', 'rut-invalido');
+          campo.classList.add('campo-requerido');
+        });
+        
+        // Aplicar estilos de RUT válido
+        const rutsValidos = clonedDoc.querySelectorAll('.rut-valido');
+        rutsValidos.forEach(campo => {
+          campo.classList.remove('rut-valido');
           campo.classList.add('campo-requerido');
         });
       }
